@@ -23,8 +23,6 @@ skynet.register_protocol {
 }
 
 local function get_addr(fd)
-	print(fd)
-	table.print(map)
 	return assert(map[fd], "subscribe first")
 end
 
@@ -51,6 +49,9 @@ function proxy.write(fd, msg, sz)
 end
 
 function proxy.close(fd)
+	if not map[fd] then
+		return
+	end
 	skynet.send(get_addr(fd), "text", "K")
 end
 
